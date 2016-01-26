@@ -1,0 +1,141 @@
+<div class="row">
+    <div class="col-xs-12">
+        <div class="page-header">
+            <a href="#/reports"><i class="fa fa-caret-left"></i> back to reports</a>
+            
+            <button ng-click="delete()" class="btn btn-danger pull-right"><i class="fa fa-close"></i></button>
+            <a class="btn btn-info pull-right" href="/admin/download/<% report.id %>"><i class="fa fa-download"></i></a>
+            <button class="btn btn-warning pull-right" ng-click="send($event)"><i class="fa fa-send" ng-hide="report.loading"></i><i class="fa fa-spinner fa-spin" ng-show="report.loading"></i></button>
+
+            <button class="btn btn-primary pull-right" ng-hide="edit" ng-click="edit=true"><i class="fa fa-edit"></i></button>
+            <button class="btn btn-success pull-right" ng-show="edit" ng-click="save();edit=false"><i class="fa fa-check"></i></button>
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<div class="row bg-info">
+    <h4>Report (<% report.id %>)</h4>
+    <div class="col-xs-12 col-sm-4">
+        <strong>Date Range:</strong> <em><% report.start_date | asDate | date:'MM/dd/yyyy' %> - <% report.end_date | asDate | date:'MM/dd/yyyy' %></em></br>
+        <strong>Created:</strong> <em><% report.created_at | asDate | date:'MM/dd/yyyy' %></em><br>
+        <strong>Rent Included:</strong> <em ng-show="report.include_rent">Yes</em><em ng-hide="report.include_rent">No</em>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+        <strong>Fees:</strong> <em><% report.data.fees.toFixed(2) %></em><br>
+        <strong>Gross:</strong> <em><% report.data.gross.toFixed(2) %></em><br>
+        <strong>Discounts:</strong> <em><% report.data.discounts.toFixed(2) %></em><br>
+        <strong>Net:</strong> <em><% report.data.net.toFixed(2) %></em>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+        <strong>Commision:</strong> <em><% report.data.commision.toFixed(2) %></em><br>
+        <strong>Total:</strong> <em><% report.data.total.toFixed(2) %></em><br>
+        <span ng-show="report.include_rent"><strong>Rent:</strong> <em><% report.data.rent.toFixed(2) %></em><br></span>
+        <strong>Payout:</strong> <em><% report.data.payout.toFixed(2) %></em>
+    </div>
+</div>
+<div class="row">
+    <strong>Email Message</strong><br>
+    <p ng-hide="edit" class="message"><% report.message %></p>
+    <textarea ng-model="report.message" rows="8" ng-show="edit" class="form-control"></textarea>
+</div>
+
+<hr />
+
+<button ng-hide="collapsed" class="btn btn-primary pull-right" ng-click="collapse();collapsed=true"><i class="fa fa-minus"></i></button>
+<button ng-show="collapsed" class="btn btn-info pull-right" ng-click="collapse();collapsed=false"><i class="fa fa-plus"></i></button>
+
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" ng-class="{active:tab=='vendor'}"><a role="tab" ng-click="tab='vendor'">Vendors</a></li>
+    <li role="presentation" ng-class="{active:tab=='misc'}"><a role="tab" ng-click="tab='misc'">Misc</a></li>
+</ul>
+<div class="misc-tab" ng-show="tab=='misc'">
+    <div class="row">
+        <table class="table col-xs-12 col-sm-10">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Quantity</th>
+                    <th>Description</th>
+                    <th>Gross</th>
+                    <th>Discounts</th>
+                    <th>Net</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="transaction in report.data.misc">
+                    <td><% transaction.code %></td>
+                    <td><% transaction.quantity %></td>
+                    <td><% transaction.description %></td>
+                    <td><% transaction.gross %></td>
+                    <td><% transaction.discounts %></td>
+                    <td><% transaction.net %></td>
+                    <td><% transaction.processed_at %></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="vendor-tab" ng-show="tab=='vendor'">
+
+    <div class="row vendor-report" ng-repeat="vendor in report.data.vendors" >
+
+        <button ng-hide="vendor.collapsed" class="btn btn-primary pull-right" ng-click="vendor.collapsed=true"><i class="fa fa-minus"></i></button>
+        <button ng-show="vendor.collapsed" class="btn btn-info pull-right" ng-click="vendor.collapsed=false"><i class="fa fa-plus"></i></button>
+        <h4><a href="#/vendor/<% vendor.vendor.id %>"><% vendor.vendor.business %></a></h4>
+
+        <div class="collapse" ng-class="{collapsed: vendor.collapsed}">
+
+            <div class="col-xs-12 col-sm-2">
+                <div class="text-left">
+                   <h5><% vendor.vendor.name %></h5>
+                   <p>
+                        Gross: <em><% vendor.gross.toFixed(2) %></em><br>
+                        Discounts: <em><% vendor.discounts.toFixed(2) %></em><br>
+                        Net: <em><% vendor.net.toFixed(2) %></em><br>
+                        Commision: <em><% vendor.commision.toFixed(2) %></em><br>
+                        Total: <em><% vendor.total.toFixed(2) %></em><br>
+                        Rent: <em><% vendor.rent.toFixed(2) %></em><br>
+                        <strong>Payout: <em><% vendor.payout.toFixed(2) %></em></strong> 
+                   </p>
+                   <p>
+                    <button ng-hide="vendor.sent" class="btn btn-warning" ng-click="openModal($index)"><i class="fa fa-send" ng-hide="vendor.loading"></i><i class="fa fa-spinner fa-spin" ng-show="vendor.loading"></i></button>
+                    <a class="btn btn-info" href="/admin/download/<% report.id %>/<% vendor.vendor.id %>"><i class="fa fa-download"></i></a>
+                   </p>
+                </div>
+            </div>
+            <table class="table table-condensed col-xs-12 col-sm-10">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Quantity</th>
+                        <th>Description</th>
+                        <th>Gross</th>
+                        <th>Discounts</th>
+                        <th>Net</th>
+                        <th>Commision</th>
+                        <th>Total</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="transaction in vendor.transactions">
+                        <td><% transaction.code %></td>
+                        <td><% transaction.quantity %></td>
+                        <td><% transaction.description %></td>
+                        <td><% transaction.gross %></td>
+                        <td><% transaction.discounts %></td>
+                        <td><% transaction.net %></td>
+                        <td><% transaction.commision.toFixed(2) %></td>
+                        <td><% transaction.total.toFixed(2) %></td>
+                        <td><% transaction.processed_at | asDate | date:'MM/dd/yyyy' %></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

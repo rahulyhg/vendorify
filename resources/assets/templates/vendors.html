@@ -1,0 +1,44 @@
+<div class="row">
+    <div class="col-xs-12">
+        <a class="btn btn-success btn-new pull-right" href="#/vendor"><i class="fa fa-plus"></i></a>
+        <a class="btn btn-primary btn-new pull-right" href="/admin/download/vendors"><i class="fa fa-download"></i></a>
+        <h1 class="page-header">Vendors</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<div class="row">
+    <div class="col-xs-12">
+
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Codes</th>
+                    <th>Name</th>
+                    <th>Business</th>
+                    <th>Rent</th>
+                    <th>Rate</th>
+                    <th>Notify</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr 
+                    ng-class="{warning:vendor.status=='pending', danger:vendor.status=='overdue', active:vendor.status=='inactive'}"
+                    ng-repeat="vendor in vendors" 
+                    ng-show="vendor.id" 
+                    ng-click="showVendor(vendor.id)">
+                        <td><span ng-repeat="code in vendor.codes"><% code.name %> </span></td>
+                        <td><% vendor.name %></td>
+                        <td><% vendor.business %></td>
+                        <td><% vendor.rent %></td>
+                        <td><% vendor.rate %></td>
+                        <td><i class="fa fa-check" ng-show="vendor.email_notification"></i></td>
+                </tr>
+            </tbody>
+        </table>
+         
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->

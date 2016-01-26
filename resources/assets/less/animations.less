@@ -1,0 +1,36 @@
+
+// ng-show/hide animations
+
+.anim-fade {
+  opacity: 1;
+}
+
+.anim-fade.ng-hide-add, .anim-fade.ng-hide-remove {
+  transition: opacity 0.5s ease;
+}
+
+.anim-fade.ng-hide {
+  opacity: 0;
+}
+
+// enter/leave animations
+
+.anim-fade.ng-enter {
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease;
+}
+.anim-fade.ng-enter {
+    opacity: 0;
+}
+.anim-fade.ng-enter-active {
+    opacity: 1;
+}
+
+.collapse {
+    overflow: hidden;
+    height: auto;
+    overflow-x: scroll;
+}
+.collapse.collapsed {
+    height: 0;
+}

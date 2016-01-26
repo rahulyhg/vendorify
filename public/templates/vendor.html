@@ -1,0 +1,200 @@
+<div class="row">
+    <div class="col-xs-12">
+        <div class="page-header">
+            <a href="#/vendors"><i class="fa fa-caret-left"></i> back to vendors</a>
+           
+           <button class="btn btn-danger pull-right" ng-click="delete()" ng-show="vendor.id"><i class="fa fa-close"></i></button>
+            <button class="btn btn-success pull-right" type="submit" ng-show="showEdit" ng-click="save()"><i class="fa fa-check"></i></button>
+            <button class="btn btn-primary pull-right" type="submit" ng-hide="showEdit" ng-click="showEdit=true"><i class="fa fa-edit"></i></button>      
+
+            <div class="pull-right">
+                <label>Vendor Status:</label>
+                <span class="status <% vendor.status %>" ng-hide="showEdit"><% vendor.status %></span>
+                <div class="btn-group dropdown pull-right" ng-class="{'open':statusToggle}" ng-show="showEdit">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-click="statusToggle?statusToggle=false:statusToggle=true">
+                        <% vendor.status %> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a ng-click="vendor.status='pending';statusToggle=false">pending</a></li>
+                        <li><a ng-click="vendor.status='active';statusToggle=false">active</a></li>
+                        <li><a ng-click="vendor.status='inactive';statusToggle=false">inactive</a></li>
+                        <li><a ng-click="vendor.status='flagged';statusToggle=false">flagged</a></li>
+                    </ul>
+                </div>
+            </div>
+                
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<div class="row">
+    <div class="col-xs-12 col-sm-6">
+        
+        <div class="cell">
+            <label>Business</label>
+            <p ng-hide="showEdit"><% vendor.business %></p>
+            <input ng-show="showEdit" class="form-control" type="text" placeholder="<% vendor.business %>" ng-model="vendor.business" />
+        </div>
+        
+        <div class="cell">
+            <label>Name</label>
+            <p ng-hide="showEdit"><% vendor.name %></p>
+            <input ng-show="showEdit" class="form-control" type="text" placeholder="<% vendor.name %>" ng-model="vendor.name" />
+        </div>
+        
+        <div class="cell">
+            <label>Phone</label>
+            <p ng-hide="showEdit"><% vendor.phone %></p>
+            <input ng-show="showEdit" class="form-control" type="phone" placeholder="<% vendor.phone %>" ng-model="vendor.phone" />
+        </div>
+        
+        <div class="cell">
+            <label>Email</label>
+            <p ng-hide="showEdit"><% vendor.email %></p>
+            <input ng-show="showEdit" class="form-control" type="email" placeholder="<% vendor.email %>" ng-model="vendor.email" />
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-6">
+        
+        <div class="cell">
+            <label>Rent</label>
+            <p ng-hide="showEdit"><% vendor.rent %></p>
+            <input ng-show="showEdit" class="form-control" type="number" placeholder="<% vendor.rent %>" ng-model="vendor.rent" />
+        </div>
+       
+        <div class="cell">
+            <label>Rate</label>
+            <p ng-hide="showEdit"><% vendor.rate %></p>
+            <input ng-show="showEdit" class="form-control" type="number" placeholder="<% vendor.rate %>" ng-model="vendor.rate" />
+        </div>
+        
+        <div class="cell">
+            <label>Notify</label><br>
+            <p ng-hide="showEdit">
+                <span ng-show="vendor.email_notification">Yes</span>
+                <span ng-hide="vendor.email_notification">No</span>
+            </p>
+            <div class="dropdown" ng-class="{'open':notifyToggle}" ng-show="showEdit">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-click="notifyToggle?notifyToggle=false:notifyToggle=true">
+                <span ng-show="vendor.email_notification">Yes</span>
+                <span ng-hide="vendor.email_notification">No</span> 
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a ng-click="vendor.email_notification=1;notifyToggle=false">Yes</a></li>
+                <li><a ng-click="vendor.email_notification=0;notifyToggle=false">No</a></li>
+              </ul>
+            </div>
+        </div>
+        
+        <div class="cell">
+            <label>Code(s)</label><br />
+            <p ng-hide="showEdit">
+                <span class="label label-primary" ng-repeat="code in vendor.codes"><% code.name %></span>
+            </p>
+            <div class="col-xs-12 col-sm-4" ng-show="showEdit">
+                <div class="input-group">
+                    <input class="form-control" type="text" placeholder="code" ng-model="code"/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-success" type="button" ng-click="addCode()"><i class="fa fa-plus"></i></button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-8">
+                <p ng-show="showEdit" class="codes">
+                    <button ng-repeat="code in vendor.codes" class="btn btn-danger" ng-click="removeCode($index)"><% code.name %> <i class="fa fa-close"></i></button>
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-sm-6">
+        <label>Notes</label>
+        <p ng-hide="showEdit" class="notes"><% vendor.notes %></p>
+        <textarea ng-show="showEdit" ng-model="vendor.notes" class="form-control" rows="5">
+            <% vendor.notes %>
+        </textarea>
+    </div>
+</div>
+
+<hr />
+
+<div class="row">
+    <h2 class="col-xs-12 col-sm-9">Transactions</h2>
+    <div class="col-xs-12 col-sm-3 pull-right">
+        <input type="date" ng-change="transactionSort()" ng-model="transactionDate" class="form-control" />
+    </div>
+</div>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Quantity</th>
+            <th>Description</th>
+            <th>Gross</th>
+            <th>Discounts</th>
+            <th>Net</th>
+            <th>Commision</th>
+            <th>Total</th>
+            <th>Timestamp</th>
+            <th>
+                <button class="btn btn-success btn-new" ng-click="newTransaction()"><i class="fa fa-plus"></i></buttom>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="transaction in vendor.transactions" ng-show="vendor.id">
+            <td>
+                <span ng-hide="transaction.edit"><% transaction.code %></span>
+                <span ng-show="transaction.edit">
+                    <input type="text" class="code" placeholder="<% transaction.code %>" ng-model="transaction.code" ng-input="autocomplete()" />
+                </span>
+            </td>
+            <td><% transaction.quantity %></td>
+            <td>
+                <span ng-hide="transaction.edit"><% transaction.description %></span>
+                <span ng-show="transaction.edit">
+                    <input type="text" class="desc" placeholder="<% transaction.description %>" ng-model="transaction.description" />
+                </span>
+            </td>
+            <td>
+                <span ng-hide="transaction.custom"><% transaction.gross %></span>
+                <span ng-show="transaction.custom"><% transaction.net %></span>
+            </td>
+            <td><% transaction.discounts %></td>
+            <td>
+                <span ng-hide="transaction.custom && transaction.edit"><% transaction.net %></span>
+                <span ng-show="transaction.edit && transaction.custom">
+                    <input type="text" class="net" placeholder="<% transaction.net %>" ng-model="transaction.net" />
+                </span>
+            </td>
+            <td>
+                <span ng-hide="transaction.custom"><% (((vendor.rate/100) * transaction.net) * -1).toFixed(2) %></span>
+                <span ng-show="transaction.custom">0</span>
+            </td>
+            <td>
+                <span ng-hide="transaction.custom"><% (transaction.net - ((vendor.rate/100) * transaction.net)).toFixed(2) %></span>
+                <span ng-show="transaction.custom"><% transaction.net %></span>
+            </td>
+            <td>
+                <span ng-hide="transaction.edit && transaction.custom">
+                    <% transaction.processed_at | asDate | date:'MM/dd/yyyy' %>
+                </span>
+                <span ng-show="transaction.edit && transaction.custom">
+                    <input ng-if="transaction.custom" type="date" as-date ng-model="transaction.processed_at" />
+                </span>
+            </td>
+            <td>
+                <button class="btn btn-primary" ng-hide="transaction.edit" ng-click="transaction.edit=true"><i class="fa fa-edit"></i></button>
+                <button class="btn btn-success" ng-show="transaction.edit" ng-click="saveTransaction($index)"><i class="fa fa-check"></i></button>
+                <button class="btn btn-danger" ng-show="transaction.custom" ng-click="deleteTransaction($index)"><i class="fa fa-close"></i></button>
+            </td>
+        </tr>
+       
+    </tbody>
+</table>

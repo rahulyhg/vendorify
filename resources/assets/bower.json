@@ -1,0 +1,24 @@
+{
+  "name": "walnutcreek-admin",
+  "version": "1.0.0",
+  "homepage": "https://admin.walnutcreekfoco.com",
+  "authors": [
+    "Michael Roth"
+  ],
+  "description": "Walnut Creek Admin UI",
+  "keywords": [
+    "walnutcreekfoco",
+    "theme",
+    "ui",
+    "angular"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.1",
+    "font-awesome": "~4.2.0",
+    "angular": "~1.4.1",
+    "angular-route": "~1.4.1",
+    "angular-resource": "~1.4.1",
+    "angular-bootstrap": "~0.13.0",
+    "angular-animate": "~1.4.5"
+  }
+}
