@@ -2,11 +2,7 @@
 
 ---
 
-
-
-![master](https://codeship.com/projects/71d37270-395d-0133-347d-7a11fbda2904/status?branch=master) **stable**
-
-![dev](https://codeship.com/projects/71d37270-395d-0133-347d-7a11fbda2904/status?branch=dev) **dev-2.0.1**
+![master](https://codeship.com/projects/71d37270-395d-0133-347d-7a11fbda2904/status?branch=master)
 
 ## Overview
 
